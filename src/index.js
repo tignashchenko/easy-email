@@ -1,14 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 
 import './theme/reset.css';
 
 import App from './containers/App';
 
-render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>,
-    document.getElementById('root')
-);
+render(<App />, document.getElementById('root'));

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Styles from './styles.scss';
 
@@ -26,8 +27,8 @@ export default class Login extends Component {
                 </div>
                 <div className = 'sign-up'>
                     <p>
-                        Don't have an account yet?{' '}
-                        <a href = '#'>Create an account</a>
+                        Don't have an account yet?
+                        <Link to = '/signup'>Create an account</Link>
                     </p>
                 </div>
             </div>

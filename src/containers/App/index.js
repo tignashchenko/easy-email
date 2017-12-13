@@ -3,10 +3,10 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 import Styles from './styles.scss';
 
+import Error from '../../components/Error';
 import Inbox from '../../components/Inbox';
 import Login from '../../components/Login';
-
-const FourOfour = () => <h1>404</h1>;
+import Signup from '../../components/Signup';
 
 export default class App extends Component {
     state = {
@@ -15,7 +15,6 @@ export default class App extends Component {
 
     render () {
         const { loggedIn } = this.state;
-
 
         return (
             <BrowserRouter>
@@ -32,9 +31,22 @@ export default class App extends Component {
                                 )
                             }
                         />
-                        <Route exact path = '/inbox' component = { Inbox } />
-                        <Route exact path = '/login' component = { Login } />
-                        <Route component = { FourOfour } />
+                        <Route
+                            component = { Signup } // eslint-disable-line react/jsx-sort-props
+                            exact
+                            path = '/signup'
+                        />
+                        <Route
+                            component = { Inbox } // eslint-disable-line react/jsx-sort-props
+                            exact
+                            path = '/inbox'
+                        />
+                        <Route
+                            component = { Login } // eslint-disable-line react/jsx-sort-props
+                            exact
+                            path = '/login'
+                        />
+                        <Route component = { Error } />
                     </Switch>
                 </div>
             </BrowserRouter>

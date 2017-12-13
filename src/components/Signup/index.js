@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
 
+import Styles from './styles.scss';
+
 export default class Signup extends Component {
     render () {
         return (
-            <div>
+            <div className = { Styles.signup }>
                 <h1>Create a new account</h1>
                 <form>
-                    <input placeholder = 'Full Name' type = 'text' />
-                    <input placeholder = 'User Name' type = 'text' />
-                    <input placeholder = 'Email Id' type = 'text' />
-                    <input placeholder = 'Password' type = 'text' />
-                    <input placeholder = 'Retype Password' type = 'text' />
+                    <input placeholder = 'Full Name' size = '55' type = 'text' />
+                    <input placeholder = 'User Name' size = '55' type = 'text' />
+                    <input placeholder = 'Email Id' size = '55' type = 'text' />
+                    <input placeholder = 'Password' size = '55' type = 'text' />
+                    <input
+                        placeholder = 'Retype Password'
+                        size = '55'
+                        type = 'text'
+                    />
                     <select name = 'country'>
                         <option value = ''>Country...</option>
                         <option value = 'AF'>Afghanistan</option>
@@ -263,13 +269,21 @@ export default class Signup extends Component {
                         <option value = 'ZM'>Zambia</option>
                         <option value = 'ZW'>Zimbabwe</option>
                     </select>
-                    <input placeholder = 'Address' type = 'text' />
-                    <input placeholder = 'Date of birth dd/mm/yy' type = 'text' />
-                    <input id = 'rememberMe' type = 'checkbox' />
-                    <label htmlFor = 'rememberMe'>
-                        I agree to the Terms of Service and Privacy Policy
-                    </label>
-                    <button type = 'submit'>Sign In</button>
+                    <input placeholder = 'Address' size = '55' type = 'text' />
+                    <input
+                        placeholder = 'Date of birth dd/mm/yy'
+                        size = '55'
+                        type = 'text'
+                    />
+                    <div className = { Styles.terms }>
+                        <input id = 'rememberMe' size = '55' type = 'checkbox' />
+                        <label htmlFor = 'rememberMe'>
+                            I agree to the Terms of Service and Privacy Policy
+                        </label>
+                    </div>
+                    <div className = { Styles.button }>
+                        <button type = 'submit'>Sign In</button>
+                    </div>
                 </form>
             </div>
         );

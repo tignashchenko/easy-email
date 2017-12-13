@@ -1,1 +1,49 @@
+$selectColor: #757575;
 
+.signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    input {
+        display: block;
+        margin-bottom: 10px;
+        border: 1px solid $selectColor;
+        border-radius: 6px;
+        outline-width: 0;
+    }
+
+    div input {
+        display: inline;
+    }
+
+    select {
+        width: 100%;
+        margin-bottom: 10px;
+        border: 1px solid $selectColor;
+        border-radius: 6px;
+        outline-width: 0;
+        color: $selectColor;
+    }
+
+    .terms {
+        display: flex;
+        margin-top: 30px;
+
+        input {
+            margin-right: 3px;
+        }
+    }
+
+    .button {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+
+        button {
+            width: 30%;
+            padding: 7px;
+            border-radius: 6px;
+        }
+    }
+}

@@ -1,1 +1,57 @@
+$borderColor: #ddd;
+$credentialsColor: #000;
 
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div {
+        margin-bottom: 10px;
+
+        input {
+            border: 1px solid $borderColor;
+            border-radius: 7px;
+            outline-width: 0;
+        }
+    }
+
+    .signInOptions {
+        display: flex;
+        justify-content: space-between;
+
+        div:nth-child(1) {
+            margin-top: 3%;
+        }
+
+        div {
+            display: flex;
+            justify-content: center;
+
+            input {
+                margin-right: 3px;
+            }
+        }
+
+        button {
+            width: 30%;
+            border-radius: 12px;
+        }
+    }
+
+    .forgotCredentials {
+        display: flex;
+        flex-direction: column;
+
+        a:nth-child(1) {
+            margin-top: 30px;
+            color: $credentialsColor;
+            text-decoration: none;
+        }
+
+        a:nth-child(2) {
+            margin-top: 5px;
+            color: $credentialsColor;
+            text-decoration: none;
+        }
+    }
+}

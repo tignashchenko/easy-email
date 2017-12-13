@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
-import Styles from './styles.scss';
-
 import Error from '../../components/Error';
 import Inbox from '../../components/Inbox';
 import Login from '../../components/Login';
@@ -18,7 +16,7 @@ export default class App extends Component {
 
         return (
             <BrowserRouter>
-                <div className = { Styles.app }>
+                <div>
                     <Switch>
                         <Route
                             exact

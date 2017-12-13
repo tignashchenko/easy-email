@@ -8,26 +8,28 @@ export default class Login extends Component {
         return (
             <div className = { Styles.login }>
                 <h1>Sign in now</h1>
-                <form className = 'user-id'>
+                <form>
                     <div>
-                        <input placeholder = 'User Id' type = 'text' />
+                        <input placeholder = 'User Id' size = '50' type = 'text' />
                     </div>
-                    <div className = 'password'>
-                        <input placeholder = 'Password' type = 'text' />
+                    <div>
+                        <input placeholder = 'Password' size = '50' type = 'text' />
                     </div>
-                    <div className = 'remember-sign-in-options'>
-                        <input id = 'rememberMe' type = 'checkbox' />
-                        <label htmlFor = 'rememberMe'>Remember Me</label>
+                    <div className = { Styles.signInOptions }>
+                        <div>
+                            <input id = 'rememberMe' type = 'checkbox' />
+                            <label htmlFor = 'rememberMe'>Remember Me</label>
+                        </div>
                         <button type = 'submit'>Sign in</button>
                     </div>
                 </form>
-                <div className = 'forgot-credentials'>
-                    <p>Forgot Password?</p>
-                    <p>Forgot User Id?</p>
+                <div className = { Styles.forgotCredentials }>
+                    <Link to = '/error'>Forgot Password?</Link>
+                    <Link to = '/error'>Forgot User Id?</Link>
                 </div>
                 <div className = 'sign-up'>
                     <p>
-                        Don't have an account yet?
+                        <span>Don't have an account yet? </span>
                         <Link to = '/signup'>Create an account</Link>
                     </p>
                 </div>

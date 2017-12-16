@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import EmailList from '../EmailList';
+import Navigation from '../Navigation';
 import faker from 'faker';
 import MdSearch from 'react-icons/lib/md/search';
 import moment from 'moment';
@@ -15,8 +16,12 @@ export default class Inbox extends Component {
 
         this.createRandomDate = this._createRandomDate.bind(this);
         this.getEmails = this._getEmails.bind(this);
-        this.toggleFavorite = this._toggleFavorite.bind(this);
         this.sortEmailsByDate = this._sortEmailsByDate.bind(this);
+        this.toggleFavorite = this._toggleFavorite.bind(this);
+        this.toggleRead = this._toggleRead.bind(this);
+        this.toggleReadAll = this._toggleReadAll.bind(this);
+        this.toggleSelect = this._toggleSelect.bind(this);
+        this.toggleSelectAll = this._toggleSelectAll.bind(this);
     }
     state = {
         emails: [],
@@ -30,7 +35,9 @@ export default class Inbox extends Component {
     }
 
     componentDidMount () {
-        // localStorage.setItem('myEmails', JSON.stringify(this.state.emails));
+        const { emails } = this.state;
+
+        localStorage.setItem('myEmails', JSON.stringify(emails));
     }
 
     _createRandomDate (end = moment(), start) {
@@ -71,6 +78,7 @@ export default class Inbox extends Component {
                     date,
                     id,
                     isFavorite: false,
+                    isSelected: false,
                     isUnread:   true,
                     sender,
                     subject:    `${subject.charAt(0).toUpperCase()}${subject.slice(
@@ -90,7 +98,48 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         this.setState(() => ({
-            emails: emails.map((email) => email.id === id ? Object.assign(email, { isFavorite: !email.isFavorite }) : email),
+            emails: emails.map(
+                (email) =>
+                    email.id === id
+                        ? Object.assign(email, {
+                            isFavorite: !email.isFavorite,
+                        })
+                        : email
+            ),
+        }));
+    }
+
+    _toggleRead (event) {
+        const id = event.target.id;
+        const { emails } = this.state;
+
+        this.setState(() => ({
+            emails: emails.map((email) => email.id === id ? Object.assign(email, { isUnread: !email.isUnread }) : email),
+        }));
+    }
+
+    _toggleReadAll () {
+        const { emails } = this.state;
+
+        this.setState(() => ({
+            emails: emails.map((email) => Object.assign(email, { isUnread: false })),
+        }));
+    }
+
+    _toggleSelect (event) {
+        const id = event.target.id;
+        const { emails } = this.state;
+
+        this.setState(() => ({
+            emails: emails.map((email) => email.id === id ? Object.assign(email, { isSelected: !email.isSelected }) : email),
+        }));
+    }
+
+    _toggleSelectAll () {
+        const { emails } = this.state;
+
+        this.setState(() => ({
+            emails: emails.map((email) => Object.assign(email, { isSelected: !email.isSelected })),
         }));
     }
 
@@ -98,21 +147,38 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         return (
-            <div className = { Styles.inbox }>
-                <div className = { Styles.header }>
-                    <h1>Inbox</h1>
-                    <div>
-                        <input placeholder = 'Search' type = 'text' />
-                        <button type = 'submit'>
-                            <MdSearch />
-                        </button>
-                    </div>
+            <div className = { Styles.inboxNav }>
+                <div className = { Styles.nav }>
+                    <Navigation emailCount = { emails.length } />
                 </div>
-                <div>
-                    <EmailList
-                        emails = { [...emails] }
-                        toggleFavorite = { this.toggleFavorite }
-                    />
+                <div className = { Styles.inbox }>
+                    <div className = { Styles.header }>
+                        <h1>Inbox {emails.length}</h1>
+                        <div>
+                            <input placeholder = 'Search' type = 'text' />
+                            <button type = 'submit'>
+                                <MdSearch />
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <div className = { Styles.select }>
+                            <input id = 'selectAll' type = 'checkbox' onChange = { this.toggleSelectAll } />
+                            <label htmlFor = 'selectAll'>Select all</label>
+                            <input id = 'markAllAsRead' type = 'checkbox' onChange = { this.toggleReadAll } />
+                            <label htmlFor = 'markAllAsRead'>Mark all as read</label>
+                            <input id = 'move' type = 'checkbox' />
+                            <label htmlFor = 'move'>Move</label>
+                        </div>
+                    </div>
+                    <div>
+                        <EmailList
+                            emails = { [...emails] }
+                            toggleFavorite = { this.toggleFavorite }
+                            toggleRead = { this.toggleRead }
+                            toggleSelect = { this.toggleSelect }
+                        />
+                    </div>
                 </div>
             </div>
         );

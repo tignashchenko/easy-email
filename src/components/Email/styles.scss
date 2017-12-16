@@ -1,11 +1,11 @@
 $borderColor: #000;
 $favoriteColor: #f00;
 $unreadColor: #f0f8ff;
+$readColor: #fff;
 
 .emailUnread {
     display: flex;
     justify-content: space-between;
-    margin: 1% auto;
     padding: 1% 0;
     background-color: $unreadColor;
 
@@ -32,8 +32,8 @@ $unreadColor: #f0f8ff;
 .emailRead {
     display: flex;
     justify-content: space-between;
-    margin: 1% auto;
     padding: 1% 0;
+    background-color: $readColor;
 
     input {
         margin-left: 20px;

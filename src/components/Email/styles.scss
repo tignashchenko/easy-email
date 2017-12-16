@@ -1,0 +1,56 @@
+$borderColor: #000;
+$favoriteColor: #f00;
+$unreadColor: #f0f8ff;
+
+.emailUnread {
+    display: flex;
+    justify-content: space-between;
+    margin: 1% auto;
+    padding: 1% 0;
+    background-color: $unreadColor;
+
+    input {
+        margin-left: 20px;
+    }
+
+    .favorite {
+        fill: $favoriteColor;
+    }
+
+    .senderSubject {
+        display: flex;
+        justify-content: space-between;
+        width: 45%;
+        margin-right: 25%;
+    }
+
+    .date {
+        margin-right: 20px;
+    }
+}
+
+.emailRead {
+    display: flex;
+    justify-content: space-between;
+    margin: 1% auto;
+    padding: 1% 0;
+
+    input {
+        margin-left: 20px;
+    }
+
+    .favorite {
+        fill: $favoriteColor;
+    }
+
+    .senderSubject {
+        display: flex;
+        justify-content: space-between;
+        width: 45%;
+        margin-right: 25%;
+    }
+
+    .date {
+        margin-right: 20px;
+    }
+}

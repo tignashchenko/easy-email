@@ -1,3 +1,17 @@
 .navigation {
-    text-align: center;
+    margin-top: 36%;
+    margin-left: 18%;
+
+    .navOptions {
+        margin: 5% auto;
+    }
+
+    .navOption {
+        display: flex;
+        margin-bottom: 5%;
+
+        svg {
+            margin-right: 2px;
+        }
+    }
 }

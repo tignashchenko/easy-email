@@ -16,7 +16,10 @@ export default class Inbox extends Component {
 
         this.createRandomDate = this._createRandomDate.bind(this);
         this.getEmails = this._getEmails.bind(this);
+        this.handleEmailSearch = this._handleEmailSearch.bind(this);
+        this.handlSearchTermChange = this._handleSearchTermChange.bind(this);
         this.sortEmailsByDate = this._sortEmailsByDate.bind(this);
+        this.searchEmails = this._searchEmails.bind(this);
         this.toggleFavorite = this._toggleFavorite.bind(this);
         this.toggleRead = this._toggleRead.bind(this);
         this.toggleReadAll = this._toggleReadAll.bind(this);
@@ -24,7 +27,8 @@ export default class Inbox extends Component {
         this.toggleSelectAll = this._toggleSelectAll.bind(this);
     }
     state = {
-        emails: [],
+        emails:     [],
+        searchTerm: '',
     };
 
     componentWillMount () {
@@ -89,6 +93,32 @@ export default class Inbox extends Component {
         });
     }
 
+    _handleEmailSearch (event) {
+        const { searchTerm } = this.state;
+
+        event.preventDefault();
+
+        this.searchEmails(searchTerm);
+    }
+
+    _handleSearchTermChange (event) {
+        this.setState({ searchTerm: event.target.value });
+    }
+
+    _searchEmails () {
+        console.log('hi');
+        const { emails, searchTerm } = this.state;
+
+        this.setState(() => ({
+            emails: emails.filter(
+                (email) =>
+                    `${email.content} ${email.sender} ${email.subject}`
+                        .toLowerCase()
+                        .indexOf(searchTerm.toLocaleLowerCase()) >= 0
+            ),
+        }));
+    }
+
     _sortEmailsByDate (emails) {
         return _.sortBy(emails, (email) => moment(email.date));
     }
@@ -114,7 +144,12 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         this.setState(() => ({
-            emails: emails.map((email) => email.id === id ? Object.assign(email, { isUnread: !email.isUnread }) : email),
+            emails: emails.map(
+                (email) =>
+                    email.id === id
+                        ? Object.assign(email, { isUnread: !email.isUnread })
+                        : email
+            ),
         }));
     }
 
@@ -122,7 +157,9 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         this.setState(() => ({
-            emails: emails.map((email) => Object.assign(email, { isUnread: false })),
+            emails: emails.map((email) =>
+                Object.assign(email, { isUnread: false })
+            ),
         }));
     }
 
@@ -131,7 +168,14 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         this.setState(() => ({
-            emails: emails.map((email) => email.id === id ? Object.assign(email, { isSelected: !email.isSelected }) : email),
+            emails: emails.map(
+                (email) =>
+                    email.id === id
+                        ? Object.assign(email, {
+                            isSelected: !email.isSelected,
+                        })
+                        : email
+            ),
         }));
     }
 
@@ -139,7 +183,9 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         this.setState(() => ({
-            emails: emails.map((email) => Object.assign(email, { isSelected: !email.isSelected })),
+            emails: emails.map((email) =>
+                Object.assign(email, { isSelected: !email.isSelected })
+            ),
         }));
     }
 
@@ -155,18 +201,36 @@ export default class Inbox extends Component {
                     <div className = { Styles.header }>
                         <h1>Inbox {emails.length}</h1>
                         <div>
-                            <input placeholder = 'Search' type = 'text' />
-                            <button type = 'submit'>
-                                <MdSearch />
-                            </button>
+                            <form>
+                                <input
+                                    placeholder = 'Search'
+                                    type = 'text'
+                                    onChange = { this.handlSearchTermChange }
+                                />
+                                <button
+                                    type = 'submit'
+                                    onClick = { this.handleEmailSearch }>
+                                    <MdSearch />
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div>
                         <div className = { Styles.select }>
-                            <input id = 'selectAll' type = 'checkbox' onChange = { this.toggleSelectAll } />
+                            <input
+                                id = 'selectAll'
+                                type = 'checkbox'
+                                onChange = { this.toggleSelectAll }
+                            />
                             <label htmlFor = 'selectAll'>Select all</label>
-                            <input id = 'markAllAsRead' type = 'checkbox' onChange = { this.toggleReadAll } />
-                            <label htmlFor = 'markAllAsRead'>Mark all as read</label>
+                            <input
+                                id = 'markAllAsRead'
+                                type = 'checkbox'
+                                onChange = { this.toggleReadAll }
+                            />
+                            <label htmlFor = 'markAllAsRead'>
+                                Mark all as read
+                            </label>
                             <input id = 'move' type = 'checkbox' />
                             <label htmlFor = 'move'>Move</label>
                         </div>

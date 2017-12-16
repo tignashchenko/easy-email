@@ -14,40 +14,42 @@ import MdReport from 'react-icons/lib/md/report';
 const Navigation = (props) => (
     <div className = { Styles.navigation }>
         <button type = 'submit'>Compose Email</button>
-        <div>
-            <MdEmail />
-            <span>Inbox</span>
-            <span>{props.emailCount}</span>
-        </div>
-        <div>
-            <FaExternalLink />
-            <span>Sent Mail</span>
-            <span>5</span>
-        </div>
-        <div>
-            <MdLightbulbOutline />
-            <span>Important</span>
-            <span>5</span>
-        </div>
-        <div>
-            <MdCreate />
-            <span>Drafts</span>
-            <span>5</span>
-        </div>
-        <div>
-            <MdDelete />
-            <span>Trash</span>
-            <span>5</span>
-        </div>
-        <div>
-            <MdReport />
-            <span>Spam</span>
-            <span>5</span>
-        </div>
-        <div>
-            <MdMarkunreadMailbox />
-            <span>All Mail</span>
-            <span>5</span>
+        <div className = { Styles.navOptions }>
+            <div className = { Styles.navOption }>
+                <MdEmail />
+                <span>Inbox</span>
+                <span>{props.emailCount}</span>
+            </div>
+            <div className = { Styles.navOption }>
+                <FaExternalLink />
+                <span>Sent Mail</span>
+                <span>5</span>
+            </div>
+            <div className = { Styles.navOption }>
+                <MdLightbulbOutline />
+                <span>Important</span>
+                <span>5</span>
+            </div>
+            <div className = { Styles.navOption }>
+                <MdCreate />
+                <span>Drafts</span>
+                <span>5</span>
+            </div>
+            <div className = { Styles.navOption }>
+                <MdDelete />
+                <span>Trash</span>
+                <span>5</span>
+            </div>
+            <div className = { Styles.navOption }>
+                <MdReport />
+                <span>Spam</span>
+                <span>5</span>
+            </div>
+            <div className = { Styles.navOption }>
+                <MdMarkunreadMailbox />
+                <span>All Mail</span>
+                <span>5</span>
+            </div>
         </div>
     </div>
 );

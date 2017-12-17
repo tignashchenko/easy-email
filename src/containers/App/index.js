@@ -13,12 +13,26 @@ import Spam from '../../components/Spam';
 import Trash from '../../components/Trash';
 
 export default class App extends Component {
+    constructor () {
+        super();
+
+        this.handleLogin = this._handleLogin.bind(this);
+    }
+
     state = {
         loggedIn: false,
+        password: 'asdf1234',
+        userId:   'tignashchenko',
     };
 
+    _handleLogin () {
+        this.setState({
+            loggedIn: true,
+        });
+    }
+
     render () {
-        const { loggedIn } = this.state;
+        const { loggedIn, password, userId } = this.state;
 
         return (
             <BrowserRouter>
@@ -61,9 +75,20 @@ export default class App extends Component {
                             path = '/inbox'
                         />
                         <Route
-                            component = { Login } // eslint-disable-line react/jsx-sort-props
                             exact
                             path = '/login'
+                            render = { (routeProps) =>
+                                loggedIn ? (
+                                    <Redirect to = '/inbox' />
+                                ) : (
+                                    <Login
+                                        { ...routeProps }
+                                        handleLogin = { this.handleLogin }
+                                        password = { password }
+                                        userId = { userId }
+                                    />
+                                )
+                            }
                         />
                         <Route
                             component = { SentMail } // eslint-disable-line react/jsx-sort-props

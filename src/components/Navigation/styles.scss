@@ -2,6 +2,14 @@
     margin-top: 36%;
     margin-left: 18%;
 
+    button {
+        border-radius: 12px;
+    }
+
+    button:focus {
+        outline: 0;
+    }
+
     .navOptions {
         margin: 5% auto;
     }
@@ -13,5 +21,15 @@
         svg {
             margin-right: 2px;
         }
+
+        a {
+            text-decoration: none !important;
+        }
+    }
+}
+
+.modal {
+    h2 {
+        color: green;
     }
 }

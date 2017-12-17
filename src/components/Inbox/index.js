@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 
 import EmailList from '../EmailList';
-import Navigation from '../Navigation';
 import faker from 'faker';
 import MdSearch from 'react-icons/lib/md/search';
 import moment from 'moment';
+import Navigation from '../Navigation';
 import { v4 } from 'uuid';
 
 import Styles from './styles.scss';
@@ -43,7 +43,7 @@ export default class Inbox extends Component {
     componentWillMount () {
         this.getEmails();
         this.setState((prevState) => ({
-            emails: this.sortEmailsByDate(prevState.emails),
+            emails: this.sortEmailsByDate(prevState.emails).reverse(),
         }));
     }
 
@@ -170,16 +170,16 @@ export default class Inbox extends Component {
         });
     }
 
-
     _sendToSpam () {
         const { emails } = this.state;
         const spamEmails = [];
-        const remainingEmails = [...emails];
+        const remainingEmails = [];
 
         for (let i = 0; i < emails.length; i++) {
             if (emails[i].isSelected) {
                 spamEmails.push(emails[i]);
-                remainingEmails.splice(i, 1);
+            } else {
+                remainingEmails.push(emails[i]);
             }
         }
 
@@ -192,12 +192,13 @@ export default class Inbox extends Component {
     _sendToTrash () {
         const { emails } = this.state;
         const trashedEmails = [];
-        const remainingEmails = [...emails];
+        const remainingEmails = [];
 
         for (let i = 0; i < emails.length; i++) {
             if (emails[i].isSelected) {
                 trashedEmails.push(emails[i]);
-                remainingEmails.splice(i, 1);
+            } else {
+                remainingEmails.push(emails[i]);
             }
         }
 

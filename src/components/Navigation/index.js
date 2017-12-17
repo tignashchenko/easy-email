@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array } from 'prop-types';
+import { array, number } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Styles from './styles.scss';
@@ -86,7 +86,7 @@ export default class Navigation extends Component {
                     <div className = { Styles.navOption }>
                         <MdEmail />
                         <Link to = '/inbox'>Inbox</Link>
-                        <span>{this.props.emails.length}</span>
+                        <span>{ this.props.unreadEmails }</span>
                     </div>
                     <div className = { Styles.navOption }>
                         <FaExternalLink />
@@ -145,7 +145,8 @@ export default class Navigation extends Component {
 }
 
 Navigation.propTypes = {
-    emails:          array.isRequired,
+    unreadEmails:    number.isRequired,
+    emails:          array,
     importantEmails: array,
     spamEmails:      array,
     trashedEmails:   array,

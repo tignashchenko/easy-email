@@ -14,6 +14,7 @@ export default class Inbox extends Component {
     constructor () {
         super();
 
+        this.checkForUnread = this._checkForUnread.bind(this);
         this.checkForSelections = this._checkForSelections.bind(this);
         this.createRandomDate = this._createRandomDate.bind(this);
         this.getEmails = this._getEmails.bind(this);
@@ -38,6 +39,7 @@ export default class Inbox extends Component {
         searchTerm:  '',
         spam:        [],
         trash:       [],
+        unRead:      0,
     };
 
     componentWillMount () {
@@ -50,15 +52,30 @@ export default class Inbox extends Component {
     componentDidMount () {
         const { emails } = this.state;
 
-        this.checkSelections = setInterval(this.checkForSelections, 500);
-        this.checkImportant = setInterval(this.sendToImportant, 500);
+        this.checkForUnreadEmails = setInterval(this.checkForUnread, 250);
+        this.checkSelections = setInterval(this.checkForSelections, 250);
+        this.checkImportant = setInterval(this.sendToImportant, 250);
 
         localStorage.setItem('myEmails', JSON.stringify(emails));
     }
 
     componentWillUnmount () {
+        clearInterval(this.checkForUnreadEmails);
         clearInterval(this.checkSelections);
         clearInterval(this.checkImportant);
+    }
+
+    _checkForUnread () {
+        const { emails } = this.state;
+        let unReadEmails = 0;
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].isUnread) {
+                unReadEmails += 1;
+            }
+        }
+
+        this.setState({ unRead: unReadEmails });
     }
 
     _checkForSelections () {
@@ -135,7 +152,6 @@ export default class Inbox extends Component {
 
     _handleSelections (event) {
         this.toggleSelect(event);
-        //this.checkForSelections();
     }
 
     _handleSearchTermChange (event) {
@@ -279,7 +295,7 @@ export default class Inbox extends Component {
     }
 
     render () {
-        const { anySelected, emails, important, spam, trash } = this.state;
+        const { anySelected, emails, important, spam, trash, unRead } = this.state;
 
         return (
             <div className = { Styles.inboxNav }>
@@ -289,11 +305,12 @@ export default class Inbox extends Component {
                         importantEmails = { important }
                         spamEmails = { spam }
                         trashedEmails = { trash }
+                        unreadEmails = { unRead }
                     />
                 </div>
                 <div className = { Styles.inbox }>
                     <div className = { Styles.header }>
-                        <h1>Inbox {emails.length}</h1>
+                        <h1>Inbox { unRead }</h1>
                         <div>
                             <form>
                                 <input

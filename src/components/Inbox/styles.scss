@@ -19,6 +19,16 @@ $borderColor: #ddd;
     label {
         margin-right: 3%;
     }
+
+    button {
+        margin-top: -3px;
+        margin-right: 3px;
+        border-radius: 12px;
+    }
+
+    button:focus {
+        outline: 0;
+    }
 }
 
 .inbox {

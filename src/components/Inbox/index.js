@@ -22,7 +22,10 @@ export default class Inbox extends Component {
         this.handleSelections = this._handleSelections.bind(this);
         this.sortEmailsByDate = this._sortEmailsByDate.bind(this);
         this.searchEmails = this._searchEmails.bind(this);
-        this.toggleFavorite = this._toggleFavorite.bind(this);
+        this.sendToImportant = this._sendToImportant.bind(this);
+        this.sendToSpam = this._sendToSpam.bind(this);
+        this.sendToTrash = this._sendToTrash.bind(this);
+        this.toggleImportant = this._toggleImportant.bind(this);
         this.toggleRead = this._toggleRead.bind(this);
         this.toggleReadAll = this._toggleReadAll.bind(this);
         this.toggleSelect = this._toggleSelect.bind(this);
@@ -31,7 +34,10 @@ export default class Inbox extends Component {
     state = {
         anySelected: false,
         emails:      [],
+        important:   [],
         searchTerm:  '',
+        spam:        [],
+        trash:       [],
     };
 
     componentWillMount () {
@@ -45,12 +51,14 @@ export default class Inbox extends Component {
         const { emails } = this.state;
 
         this.checkSelections = setInterval(this.checkForSelections, 500);
+        this.checkImportant = setInterval(this.sendToImportant, 500);
 
         localStorage.setItem('myEmails', JSON.stringify(emails));
     }
 
     componentWillUnmount () {
         clearInterval(this.checkSelections);
+        clearInterval(this.checkImportant);
     }
 
     _checkForSelections () {
@@ -105,11 +113,11 @@ export default class Inbox extends Component {
                     content,
                     date,
                     id,
-                    isFavorite: false,
-                    isSelected: false,
-                    isUnread:   true,
+                    isImportant: false,
+                    isSelected:  false,
+                    isUnread:    true,
                     sender,
-                    subject:    `${subject.charAt(0).toUpperCase()}${subject.slice(
+                    subject:     `${subject.charAt(0).toUpperCase()}${subject.slice(
                         1
                     )}`,
                 });
@@ -147,11 +155,63 @@ export default class Inbox extends Component {
         }));
     }
 
+    _sendToImportant () {
+        const { emails } = this.state;
+        const importantEmails = [];
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].isImportant) {
+                importantEmails.push(emails[i]);
+            }
+        }
+
+        this.setState({
+            important: [...importantEmails],
+        });
+    }
+
+
+    _sendToSpam () {
+        const { emails } = this.state;
+        const spamEmails = [];
+        const remainingEmails = [...emails];
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].isSelected) {
+                spamEmails.push(emails[i]);
+                remainingEmails.splice(i, 1);
+            }
+        }
+
+        this.setState({
+            emails: [...remainingEmails],
+            spam:   [...spamEmails],
+        });
+    }
+
+    _sendToTrash () {
+        const { emails } = this.state;
+        const trashedEmails = [];
+        const remainingEmails = [...emails];
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].isSelected) {
+                trashedEmails.push(emails[i]);
+                remainingEmails.splice(i, 1);
+            }
+        }
+
+        this.setState({
+            emails: [...remainingEmails],
+            trash:  [...trashedEmails],
+        });
+    }
+
     _sortEmailsByDate (emails) {
         return _.sortBy(emails, (email) => moment(email.date));
     }
 
-    _toggleFavorite (event) {
+    _toggleImportant (event) {
         const id = event.target.id;
         const { emails } = this.state;
 
@@ -160,7 +220,7 @@ export default class Inbox extends Component {
                 (email) =>
                     email.id === id
                         ? Object.assign(email, {
-                            isFavorite: !email.isFavorite,
+                            isImportant: !email.isImportant,
                         })
                         : email
             ),
@@ -218,12 +278,17 @@ export default class Inbox extends Component {
     }
 
     render () {
-        const { emails } = this.state;
+        const { anySelected, emails, important, spam, trash } = this.state;
 
         return (
             <div className = { Styles.inboxNav }>
                 <div className = { Styles.nav }>
-                    <Navigation emailCount = { emails.length } />
+                    <Navigation
+                        emails = { emails }
+                        importantEmails = { important }
+                        spamEmails = { spam }
+                        trashedEmails = { trash }
+                    />
                 </div>
                 <div className = { Styles.inbox }>
                     <div className = { Styles.header }>
@@ -259,15 +324,25 @@ export default class Inbox extends Component {
                             <label htmlFor = 'markAllAsRead'>
                                 Mark all as read
                             </label>
-                            <input id = 'move' type = 'checkbox' />
-                            <label htmlFor = 'move'>Move</label>
+                            {anySelected ? (
+                                <button
+                                    type = 'submit'
+                                    onClick = { this.sendToTrash }>
+                                    Move to trash
+                                </button>
+                            ) : null}
+                            {anySelected ? (
+                                <button type = 'submit' onClick = { this.sendToSpam }>
+                                    Move to spam
+                                </button>
+                            ) : null}
                         </div>
                     </div>
                     <div>
                         <EmailList
                             emails = { [...emails] }
                             handleSelections = { this.handleSelections }
-                            toggleFavorite = { this.toggleFavorite }
+                            toggleImportant = { this.toggleImportant }
                             toggleRead = { this.toggleRead }
                         />
                     </div>

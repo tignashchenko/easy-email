@@ -1,5 +1,5 @@
 import React from 'react';
-import { number } from 'prop-types';
+import { array } from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Styles from './styles.scss';
@@ -19,44 +19,49 @@ const Navigation = (props) => (
             <div className = { Styles.navOption }>
                 <MdEmail />
                 <Link to = '/inbox'>Inbox</Link>
-                <span>{props.emailCount}</span>
+                <span>{props.emails.length}</span>
             </div>
             <div className = { Styles.navOption }>
                 <FaExternalLink />
                 <Link to = 'sentmail'>Sent Mail</Link>
-                <span>5</span>
+                <span>{null}</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdLightbulbOutline />
                 <Link to = '/important'>Important</Link>
-                <span>5</span>
+                <span>{ props.importantEmails.length ? props.importantEmails.length : null }</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdCreate />
                 <Link to = '/drafts'>Drafts</Link>
-                <span>5</span>
+                <span>{null}</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdDelete />
                 <Link to = '/trash'>Trash</Link>
-                <span>5</span>
+                <span>{ props.trashedEmails.length ? props.trashedEmails.length : null }</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdReport />
                 <Link to = '/spam'>Spam</Link>
-                <span>5</span>
+                <span>{ props.spamEmails.length ? props.spamEmails.length: null }</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdMarkunreadMailbox />
                 <Link to = '/allmail'>All Mail</Link>
-                <span>5</span>
+                <span>{ props.emails.length + props.trashedEmails.length + props.spamEmails.length ?
+                    props.emails.length + props.trashedEmails.length + props.spamEmails.length :
+                    null }
+                </span>
             </div>
         </div>
-    </div>
-);
+    </div>);
 
 Navigation.propTypes = {
-    emailCount: number.isRequired,
+    emails:          array.isRequired,
+    importantEmails: array,
+    spamEmails:      array,
+    trashedEmails:   array,
 };
 
 export default Navigation;

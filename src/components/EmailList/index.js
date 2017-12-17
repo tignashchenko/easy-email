@@ -6,7 +6,7 @@ import Styles from './styles.scss';
 import Email from '../Email';
 
 const EmailList = (props) => {
-    const { emails, toggleFavorite, toggleRead, handleSelections } = props;
+    const { emails, toggleImportant, toggleRead, handleSelections } = props;
 
     return (
         <div className = { Styles.list }>
@@ -15,7 +15,7 @@ const EmailList = (props) => {
                     <Email
                         email = { { ...email } }
                         handleSelections = { handleSelections }
-                        toggleFavorite = { toggleFavorite }
+                        toggleImportant = { toggleImportant }
                         toggleRead = { toggleRead }
                     />
                 </div>
@@ -27,7 +27,7 @@ const EmailList = (props) => {
 EmailList.propTypes = {
     emails:           array.isRequired,
     handleSelections: func.isRequired,
-    toggleFavorite:   func.isRequired,
+    toggleImportant:  func.isRequired,
     toggleRead:       func.isRequired,
 };
 

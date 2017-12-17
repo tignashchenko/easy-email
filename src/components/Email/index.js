@@ -6,7 +6,7 @@ import MdStarOutline from 'react-icons/lib/md/star-outline';
 import Styles from './styles.scss';
 
 const Email = (props) => {
-    const { email, handleSelections, toggleFavorite, toggleRead } = props;
+    const { email, handleSelections, toggleImportant, toggleRead } = props;
 
     return (
         <div className = { email.isUnread ? Styles.emailUnread : Styles.emailRead }>
@@ -17,9 +17,9 @@ const Email = (props) => {
                 onChange = { handleSelections }
             />
             <MdStarOutline
-                className = { email.isFavorite ? Styles.favorite : null }
+                className = { email.isImportant ? Styles.important : null }
                 id = { email.id }
-                onClick = { toggleFavorite }
+                onClick = { toggleImportant }
             />
             <div
                 className = { Styles.senderSubject }
@@ -46,7 +46,7 @@ const Email = (props) => {
 Email.propTypes = {
     email:            object.isRequired,
     handleSelections: func.isRequired,
-    toggleFavorite:   func.isRequired,
+    toggleImportant:  func.isRequired,
     toggleRead:       func.isRequired,
 };
 

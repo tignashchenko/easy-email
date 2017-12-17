@@ -14,10 +14,12 @@ export default class Inbox extends Component {
     constructor () {
         super();
 
+        this.checkForSelections = this._checkForSelections.bind(this);
         this.createRandomDate = this._createRandomDate.bind(this);
         this.getEmails = this._getEmails.bind(this);
         this.handleEmailSearch = this._handleEmailSearch.bind(this);
         this.handlSearchTermChange = this._handleSearchTermChange.bind(this);
+        this.handleSelections = this._handleSelections.bind(this);
         this.sortEmailsByDate = this._sortEmailsByDate.bind(this);
         this.searchEmails = this._searchEmails.bind(this);
         this.toggleFavorite = this._toggleFavorite.bind(this);
@@ -27,8 +29,9 @@ export default class Inbox extends Component {
         this.toggleSelectAll = this._toggleSelectAll.bind(this);
     }
     state = {
-        emails:     [],
-        searchTerm: '',
+        anySelected: false,
+        emails:      [],
+        searchTerm:  '',
     };
 
     componentWillMount () {
@@ -41,7 +44,28 @@ export default class Inbox extends Component {
     componentDidMount () {
         const { emails } = this.state;
 
+        this.checkSelections = setInterval(this.checkForSelections, 500);
+
         localStorage.setItem('myEmails', JSON.stringify(emails));
+    }
+
+    componentWillUnmount () {
+        clearInterval(this.checkSelections);
+    }
+
+    _checkForSelections () {
+        const { emails } = this.state;
+        let shouldUpdate = false;
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].isSelected) {
+                shouldUpdate = true;
+            }
+        }
+
+        this.setState({
+            anySelected: shouldUpdate,
+        });
     }
 
     _createRandomDate (end = moment(), start) {
@@ -101,12 +125,16 @@ export default class Inbox extends Component {
         this.searchEmails(searchTerm);
     }
 
+    _handleSelections (event) {
+        this.toggleSelect(event);
+        //this.checkForSelections();
+    }
+
     _handleSearchTermChange (event) {
         this.setState({ searchTerm: event.target.value });
     }
 
     _searchEmails () {
-        console.log('hi');
         const { emails, searchTerm } = this.state;
 
         this.setState(() => ({
@@ -114,7 +142,7 @@ export default class Inbox extends Component {
                 (email) =>
                     `${email.content} ${email.sender} ${email.subject}`
                         .toLowerCase()
-                        .indexOf(searchTerm.toLocaleLowerCase()) >= 0
+                        .indexOf(searchTerm.toLowerCase()) >= 0
             ),
         }));
     }
@@ -238,9 +266,9 @@ export default class Inbox extends Component {
                     <div>
                         <EmailList
                             emails = { [...emails] }
+                            handleSelections = { this.handleSelections }
                             toggleFavorite = { this.toggleFavorite }
                             toggleRead = { this.toggleRead }
-                            toggleSelect = { this.toggleSelect }
                         />
                     </div>
                 </div>

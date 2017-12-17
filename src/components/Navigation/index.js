@@ -1,5 +1,6 @@
 import React from 'react';
 import { number } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Styles from './styles.scss';
 
@@ -17,37 +18,37 @@ const Navigation = (props) => (
         <div className = { Styles.navOptions }>
             <div className = { Styles.navOption }>
                 <MdEmail />
-                <span>Inbox</span>
+                <Link to = '/inbox'>Inbox</Link>
                 <span>{props.emailCount}</span>
             </div>
             <div className = { Styles.navOption }>
                 <FaExternalLink />
-                <span>Sent Mail</span>
+                <Link to = 'sentmail'>Sent Mail</Link>
                 <span>5</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdLightbulbOutline />
-                <span>Important</span>
+                <Link to = '/important'>Important</Link>
                 <span>5</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdCreate />
-                <span>Drafts</span>
+                <Link to = '/drafts'>Drafts</Link>
                 <span>5</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdDelete />
-                <span>Trash</span>
+                <Link to = '/trash'>Trash</Link>
                 <span>5</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdReport />
-                <span>Spam</span>
+                <Link to = '/spam'>Spam</Link>
                 <span>5</span>
             </div>
             <div className = { Styles.navOption }>
                 <MdMarkunreadMailbox />
-                <span>All Mail</span>
+                <Link to = '/allmail'>All Mail</Link>
                 <span>5</span>
             </div>
         </div>

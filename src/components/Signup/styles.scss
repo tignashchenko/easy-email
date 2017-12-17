@@ -45,5 +45,9 @@ $selectColor: #757575;
             padding: 7px;
             border-radius: 6px;
         }
+
+        button:focus {
+            outline: 0;
+        }
     }
 }

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Spam component should correspond to its snapshot counterpart 1`] = `
+<div>
+  <h1>
+    This is spam!
+  </h1>
+</div>
+`;

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Trash component should correspond to its snapshot counterpart 1`] = `
+<div>
+  <h1>
+    This is trash!
+  </h1>
+</div>
+`;

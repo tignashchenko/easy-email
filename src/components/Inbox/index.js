@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import { func } from 'prop-types';
 
 import EmailList from '../EmailList';
 import faker from 'faker';
@@ -12,6 +13,9 @@ import { v4 } from 'uuid';
 import Styles from './styles.scss';
 
 export default class Inbox extends Component {
+    static propTypes = {
+        handleLogin: func.isRequired,
+    }
 
     constructor () {
         super();
@@ -306,6 +310,8 @@ export default class Inbox extends Component {
             unRead,
         } = this.state;
 
+        const { handleLogin } = this.props;
+
         return (
             <div className = { Styles.inboxNav }>
                 <div className = { Styles.nav }>
@@ -321,7 +327,9 @@ export default class Inbox extends Component {
                     <div className = { Styles.header }>
                         <h1>Inbox {unRead}</h1>
                         <div>
-                            <SignoutButton />
+                            <div onMouseEnter = { handleLogin }>
+                                <SignoutButton />
+                            </div>
                             <form>
                                 <input
                                     placeholder = 'Search'

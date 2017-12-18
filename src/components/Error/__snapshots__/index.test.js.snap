@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Error component should correspond to its snapshot counterpart 1`] = `
+<h1>
+  Page not found (404 error)
+</h1>
+`;

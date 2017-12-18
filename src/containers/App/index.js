@@ -70,9 +70,15 @@ export default class App extends Component {
                             path = '/important'
                         />
                         <Route
-                            component = { Inbox } // eslint-disable-line react/jsx-sort-props
                             exact
                             path = '/inbox'
+                            render = { (routeProps) => (
+                                <Inbox
+                                    { ...routeProps }
+                                    handleLogin = { this.handleLogin }
+                                />
+                            )
+                            }
                         />
                         <Route
                             exact

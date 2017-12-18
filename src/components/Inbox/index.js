@@ -6,11 +6,13 @@ import faker from 'faker';
 import MdSearch from 'react-icons/lib/md/search';
 import moment from 'moment';
 import Navigation from '../Navigation';
+import SignoutButton from '../SignoutButton';
 import { v4 } from 'uuid';
 
 import Styles from './styles.scss';
 
 export default class Inbox extends Component {
+
     constructor () {
         super();
 
@@ -295,7 +297,14 @@ export default class Inbox extends Component {
     }
 
     render () {
-        const { anySelected, emails, important, spam, trash, unRead } = this.state;
+        const {
+            anySelected,
+            emails,
+            important,
+            spam,
+            trash,
+            unRead,
+        } = this.state;
 
         return (
             <div className = { Styles.inboxNav }>
@@ -310,8 +319,9 @@ export default class Inbox extends Component {
                 </div>
                 <div className = { Styles.inbox }>
                     <div className = { Styles.header }>
-                        <h1>Inbox { unRead }</h1>
+                        <h1>Inbox {unRead}</h1>
                         <div>
+                            <SignoutButton />
                             <form>
                                 <input
                                     placeholder = 'Search'

@@ -26,9 +26,9 @@ export default class App extends Component {
     };
 
     _handleLogin () {
-        this.setState({
-            loggedIn: true,
-        });
+        this.setState((prevState) => ({
+            loggedIn: !prevState.loggedIn,
+        }));
     }
 
     render () {

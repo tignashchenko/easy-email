@@ -86,7 +86,7 @@ export default class Navigation extends Component {
                     <div className = { Styles.navOption }>
                         <MdEmail />
                         <Link to = '/inbox'>Inbox</Link>
-                        <span>{ this.props.unreadEmails }</span>
+                        <span>{this.props.unreadEmails}</span>
                     </div>
                     <div className = { Styles.navOption }>
                         <FaExternalLink />

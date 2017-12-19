@@ -1,5 +1,5 @@
 import React from 'react';
-import { array, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import Styles from './styles.scss';
 
 const Button = ({ history, handleLogin }) => (
@@ -14,7 +14,7 @@ const Button = ({ history, handleLogin }) => (
 
 Button.propTypes = {
     handleLogin: func.isRequired,
-    history:     array.isRequired,
+    history:     object.isRequired,
 };
 
 export default Button;

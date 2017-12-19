@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { array, func, string } from 'prop-types';
+import { func, object, string } from 'prop-types';
 
 import Styles from './styles.scss';
 
 export default class Login extends Component {
     static propTypes = {
         handleLogin: func.isRequired,
-        history:     array.isRequired,
+        history:     object.isRequired,
         password:    string.isRequired,
         userId:      string.isRequired,
     };

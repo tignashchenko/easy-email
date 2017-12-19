@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { func, string } from 'prop-types';
+import { array, func, string } from 'prop-types';
 
 import Styles from './styles.scss';
 
 export default class Login extends Component {
     static propTypes = {
         handleLogin: func.isRequired,
+        history:     array.isRequired,
         password:    string.isRequired,
         userId:      string.isRequired,
     };
@@ -32,6 +33,7 @@ export default class Login extends Component {
 
         if (password === attemptedPassword && userId === attemptedUserId) {
             handleLogin();
+            this.props.history.push('/inbox');
         }
     }
 

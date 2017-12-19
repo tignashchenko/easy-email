@@ -33,23 +33,41 @@ export default class App extends Component {
 
     render () {
         const { loggedIn, password, userId } = this.state;
-
         return (
             <BrowserRouter>
                 <div>
                     <Switch>
-                        <Route
-                            exact
-                            path = '/'
-                            render = { () =>
-                                loggedIn ? (
-                                    <Redirect to = '/inbox' />
-                                ) : (
-                                    <Redirect to = '/login' />
+                        { loggedIn 
+                            ? <Route
+                                exact
+                                path = '/inbox'
+                                render = { (routeProps) => (
+                                    <Inbox
+                                        { ...routeProps }
+                                        handleLogin = { this.handleLogin }
+                                    />
                                 )
-                            }
-                        />
-                        <Route
+                                }
+                            />
+                            : <Route
+                                exact
+                                path = '/login'
+                                render = { (routeProps) =>
+                                    loggedIn ? (
+                                        <Redirect to = '/inbox' />
+                                    ) : (
+                                        <Login
+                                            { ...routeProps }
+                                            handleLogin = { this.handleLogin }
+                                            password = { password }
+                                            userId = { userId }
+                                        />
+                                    )
+                                }
+                            />
+                        }
+                        <Redirect to = '/login' />
+                        {/*<Route
                             component = { Signup } // eslint-disable-line react/jsx-sort-props
                             exact
                             path = '/signup'
@@ -111,7 +129,7 @@ export default class App extends Component {
                             exact
                             path = '/trash'
                         />
-                        <Route component = { Error } />
+                        <Route component = { Error } />*/}
                     </Switch>
                 </div>
             </BrowserRouter>

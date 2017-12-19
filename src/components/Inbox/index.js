@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { func } from 'prop-types';
+import { array, func } from 'prop-types';
 
 import EmailList from '../EmailList';
 import faker from 'faker';
@@ -15,6 +15,7 @@ import Styles from './styles.scss';
 export default class Inbox extends Component {
     static propTypes = {
         handleLogin: func.isRequired,
+        history:     array.isRequired,
     }
 
     constructor () {
@@ -327,8 +328,11 @@ export default class Inbox extends Component {
                     <div className = { Styles.header }>
                         <h1>Inbox {unRead}</h1>
                         <div>
-                            <div onMouseEnter = { handleLogin }>
-                                <SignoutButton />
+                            <div>
+                                <SignoutButton
+                                    handleLogin = { handleLogin }
+                                    history = { this.props.history }
+                                />
                             </div>
                             <form>
                                 <input

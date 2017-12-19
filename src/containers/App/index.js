@@ -76,6 +76,72 @@ export default class App extends Component {
                     {
                         <Route
                             exact
+                            path = '/sentmail'
+                            render = { (routeProps) => (
+                                <SentMail
+                                    { ...routeProps }
+                                />
+                            ) }
+                        />
+                    }
+                    {
+                        <Route
+                            exact
+                            path = '/important'
+                            render = { (routeProps) => (
+                                <Important
+                                    { ...routeProps }
+                                />
+                            ) }
+                        />
+                    }
+                    {
+                        <Route
+                            exact
+                            path = '/drafts'
+                            render = { (routeProps) => (
+                                <Drafts
+                                    { ...routeProps }
+                                />
+                            ) }
+                        />
+                    }
+                    {
+                        <Route
+                            exact
+                            path = '/trash'
+                            render = { (routeProps) => (
+                                <Trash
+                                    { ...routeProps }
+                                />
+                            ) }
+                        />
+                    }
+                    {
+                        <Route
+                            exact
+                            path = '/spam'
+                            render = { (routeProps) => (
+                                <Spam
+                                    { ...routeProps }
+                                />
+                            ) }
+                        />
+                    }
+                    {
+                        <Route
+                            exact
+                            path = '/allmail'
+                            render = { (routeProps) => (
+                                <AllMail
+                                    { ...routeProps }
+                                />
+                            ) }
+                        />
+                    }
+                    {
+                        <Route
+                            exact
                             path = '/'
                             render = { (routeProps) => (
                                 <Redirect
@@ -88,70 +154,6 @@ export default class App extends Component {
                     {
                         <Route component = { Error } />
                     }
-                    {/*<Redirect to = '/login' />*/}
-                        {/*<Route
-                            component = { Signup } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/signup'
-                        />
-                        <Route
-                            component = { AllMail } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/allmail'
-                        />
-                        <Route
-                            component = { Drafts } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/drafts'
-                        />
-                        <Route
-                            component = { Important } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/important'
-                        />
-                        <Route
-                            exact
-                            path = '/inbox'
-                            render = { (routeProps) => (
-                                <Inbox
-                                    { ...routeProps }
-                                    handleLogin = { this.handleLogin }
-                                />
-                            )
-                            }
-                        />
-                        <Route
-                            exact
-                            path = '/login'
-                            render = { (routeProps) =>
-                                loggedIn ? (
-                                    <Redirect to = '/inbox' />
-                                ) : (
-                                    <Login
-                                        { ...routeProps }
-                                        handleLogin = { this.handleLogin }
-                                        password = { password }
-                                        userId = { userId }
-                                    />
-                                )
-                            }
-                        />
-                        <Route
-                            component = { SentMail } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/sentmail'
-                        />
-                        <Route
-                            component = { Spam } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/spam'
-                        />
-                        <Route
-                            component = { Trash } // eslint-disable-line react/jsx-sort-props
-                            exact
-                            path = '/trash'
-                        />
-                        <Route component = { Error } />*/}
                 </Switch>
             </BrowserRouter>
         );

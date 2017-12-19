@@ -54,6 +54,7 @@ export default class Login extends Component {
                 <form>
                     <div>
                         <input
+                            id = 'userId'
                             placeholder = 'User Id'
                             size = '50'
                             type = 'text'
@@ -62,6 +63,7 @@ export default class Login extends Component {
                     </div>
                     <div>
                         <input
+                            id = 'password'
                             placeholder = 'Password'
                             size = '50'
                             type = 'text'

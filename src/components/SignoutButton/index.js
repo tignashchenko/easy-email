@@ -2,7 +2,7 @@ import React from 'react';
 import { func, object } from 'prop-types';
 import Styles from './styles.scss';
 
-const Button = ({ history, handleLogin }) => (
+const SignoutButton = ({ history, handleLogin }) => (
     <button
         className = { Styles.signout }
         type = 'submit'
@@ -12,9 +12,9 @@ const Button = ({ history, handleLogin }) => (
         } }>Sign out</button>
 );
 
-Button.propTypes = {
+SignoutButton.propTypes = {
     handleLogin: func.isRequired,
     history:     object.isRequired,
 };
 
-export default Button;
+export default SignoutButton;

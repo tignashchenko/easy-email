@@ -2,7 +2,6 @@ import React from 'react';
 import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import EmailList from './';
-import Email from '../Email';
 
 configure({ adapter: new Adapter() });
 

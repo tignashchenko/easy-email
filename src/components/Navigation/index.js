@@ -74,14 +74,11 @@ export default class Navigation extends Component {
                             ref = { (subject) => this.subject = subject }
                             type = 'text'
                         />
-                        <input
-                            ref = { (content) => this.content = content }
-                            type = 'text'
-                        />
+                        <textarea cols = '50' ref = { (content) => this.content = content } rows = '20'>
+                        </textarea>
                     </form>
                     <button onClick = { this.closeModal }>close</button>
                 </Modal>
-
                 <div className = { Styles.navOptions }>
                     <div className = { Styles.navOption }>
                         <MdEmail />

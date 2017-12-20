@@ -1,5 +1,5 @@
 import React from 'react';
-import { configure, mount } from 'enzyme';
+import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Login from './';
 
@@ -21,11 +21,11 @@ const props = {
     userId:      'tignashchenko',
 };
 
-const result = mount(<Login { ...props } />);
+const result = shallow(<Login { ...props } />);
 
 describe('Login component', () => {
-    test(`should have 8 'div' elements`, () => {
-        expect(result.find('div')).toHaveLength(8);
+    test(`should have 7 'div' elements`, () => {
+        expect(result.find('div')).toHaveLength(7);
     });
 
     test(`should have 1 'form' element`, () => {

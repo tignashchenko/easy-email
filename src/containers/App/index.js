@@ -68,7 +68,7 @@ export default class App extends Component {
                             path = '/signup'
                             render = { (routeProps) => (
                                 <Signup
-                                    { ...routeProps } 
+                                    { ...routeProps }
                                 />
                             ) }
                         />

@@ -7,9 +7,9 @@ import Styles from './styles.scss';
 export default class Login extends Component {
     static propTypes = {
         handleLogin: func.isRequired,
-        history:     object.isRequired,
         password:    string.isRequired,
         userId:      string.isRequired,
+        history:     object,
     };
 
     constructor (props) {
@@ -26,14 +26,14 @@ export default class Login extends Component {
     };
 
     _checkCredentials (event) {
-        const { handleLogin, password, userId } = this.props;
+        const { handleLogin, history, password, userId } = this.props;
         const { attemptedPassword, attemptedUserId } = this.state;
 
         event.preventDefault();
 
         if (password === attemptedPassword && userId === attemptedUserId) {
             handleLogin();
-            this.props.history.push('/inbox');
+            history.push('/inbox');
         }
     }
 

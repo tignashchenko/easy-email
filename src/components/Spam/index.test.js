@@ -4,6 +4,8 @@ import Spam from './';
 
 const renderTree = dom.create(<Spam />).toJSON();
 
-test('Spam component should correspond to its snapshot counterpart', () => {
-    expect(renderTree).toMatchSnapshot();
+describe('Spam component', () => {
+    test('Spam component should correspond to its snapshot counterpart', () => {
+        expect(renderTree).toMatchSnapshot();
+    });
 });

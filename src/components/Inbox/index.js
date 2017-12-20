@@ -63,7 +63,9 @@ export default class Inbox extends Component {
         this.checkSelections = setInterval(this.checkForSelections, 250);
         this.checkImportant = setInterval(this.sendToImportant, 250);
 
-        localStorage.setItem('myEmails', JSON.stringify(emails));
+        if (!localStorage.getItem('myEmails')) {
+            localStorage.setItem('myEmails', JSON.stringify(emails));
+        }
     }
 
     componentWillUnmount () {
@@ -123,30 +125,36 @@ export default class Inbox extends Component {
     }
 
     _getEmails () {
-        this.setState((prevState) => {
-            for (let i = 0; i < 5; i++) {
-                const content = faker.fake('{{lorem.paragraph}}');
-                const date = this.createRandomDate('2017-12-15', '2017-06-01');
-                const id = v4();
-                const sender = faker.fake(
-                    '{{name.firstName}} {{name.lastName}}'
-                );
-                const subject = faker.fake('{{lorem.words}}').toString();
-
-                prevState.emails.push({
-                    content,
-                    date,
-                    id,
-                    isImportant: false,
-                    isSelected:  false,
-                    isUnread:    true,
-                    sender,
-                    subject:     `${subject.charAt(0).toUpperCase()}${subject.slice(
-                        1
-                    )}`,
-                });
-            }
-        });
+        if (!localStorage.getItem('myEmails')) {
+            this.setState((prevState) => {
+                for (let i = 0; i < 5; i++) {
+                    const content = faker.fake('{{lorem.paragraph}}');
+                    const date = this.createRandomDate('2017-12-15', '2017-06-01');
+                    const id = v4();
+                    const sender = faker.fake(
+                        '{{name.firstName}} {{name.lastName}}'
+                    );
+                    const subject = faker.fake('{{lorem.words}}').toString();
+    
+                    prevState.emails.push({
+                        content,
+                        date,
+                        id,
+                        isImportant: false,
+                        isSelected:  false,
+                        isUnread:    true,
+                        sender,
+                        subject:     `${subject.charAt(0).toUpperCase()}${subject.slice(
+                            1
+                        )}`,
+                    });
+                }
+            });
+        } else {
+            this.setState({
+                emails: JSON.parse(localStorage.getItem('myEmails')),
+            });
+        }
     }
 
     _handleEmailSearch (event) {

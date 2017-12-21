@@ -50,6 +50,7 @@ export default class Inbox extends Component {
     };
 
     componentWillMount () {
+        localStorage.setItem('loggedIn', true);
         this.getEmails();
         this.setState((prevState) => ({
             emails: this.sortEmailsByDate(prevState.emails).reverse(),

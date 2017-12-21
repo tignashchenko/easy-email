@@ -7,6 +7,7 @@ const SignoutButton = ({ history, handleLogin }) => (
         className = { Styles.signout }
         type = 'submit'
         onClick = { () => {
+            localStorage.setItem('loggedIn', false);
             handleLogin();
             history.push('/login');
         } }>Sign out</button>

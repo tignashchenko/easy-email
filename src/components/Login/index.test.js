@@ -1,5 +1,5 @@
 import React from 'react';
-import { configure, mount } from 'enzyme';
+import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Login from './';
 
@@ -24,7 +24,7 @@ const props = {
 
 props.history.push = jest.fn();
 
-const result = mount(<Login { ...props } />);
+const result = shallow(<Login { ...props } />);
 
 describe('Login component', () => {
     test(`should have 7 'div' elements`, () => {

@@ -20,10 +20,16 @@ export default class App extends Component {
     }
 
     state = {
-        loggedIn: false,
+        loggedIn: localStorage.getItem('loggedIn') === 'true' ? true : false,
         password: 'asdf1234',
         userId:   'tignashchenko',
     };
+
+    componentWillUnmount () {
+        this.setState({
+            loggedIn: Boolean(localStorage.getItem('loggedIn')),
+        });
+    }
 
     _handleLogin () {
         this.setState((prevState) => ({

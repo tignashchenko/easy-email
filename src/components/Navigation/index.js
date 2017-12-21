@@ -19,7 +19,6 @@ export default class Navigation extends Component {
 
         this.afterOpenModal = this._afterOpenModal.bind(this);
         this.closeModal = this._closeModal.bind(this);
-        this.composeEmail = this._composeEmail.bind(this);
         this.openModal = this._openModal.bind(this);
     }
 
@@ -31,19 +30,16 @@ export default class Navigation extends Component {
         this.header.style.color = '#000';
         this.header.style.marginTop = '0%';
         this.to.style.width = '100%';
+        this.to.style.outline = 'none';
         this.subject.style.width = '100%';
+        this.subject.style.outline = 'none';
         this.content.style.height = '13rem';
         this.content.style.width = '100%';
+        this.content.style.outline = 'none';
     }
 
     _closeModal () {
         this.setState({ modalIsOpen: false });
-    }
-
-    _composeEmail (event) {
-        event.preventDefault();
-
-        return <Modal />;
     }
 
     _openModal () {
@@ -77,7 +73,10 @@ export default class Navigation extends Component {
                         <textarea cols = '50' ref = { (content) => this.content = content } rows = '20'>
                         </textarea>
                     </form>
-                    <button onClick = { this.closeModal }>close</button>
+                    <div>
+                        <button>Send</button>
+                        <button onClick = { this.closeModal }>Close</button>
+                    </div>
                 </Modal>
                 <div className = { Styles.navOptions }>
                     <div className = { Styles.navOption }>

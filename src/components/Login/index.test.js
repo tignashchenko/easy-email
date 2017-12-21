@@ -1,5 +1,5 @@
 import React from 'react';
-import { configure, shallow } from 'enzyme';
+import { configure, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Login from './';
 
@@ -17,11 +17,14 @@ const newState = {
 
 const props = {
     handleLogin: jest.fn(),
+    history:     {},
     password:    'asdf1234',
     userId:      'tignashchenko',
 };
 
-const result = shallow(<Login { ...props } />);
+props.history.push = jest.fn();
+
+const result = mount(<Login { ...props } />);
 
 describe('Login component', () => {
     test(`should have 7 'div' elements`, () => {
@@ -70,5 +73,19 @@ describe('Login component', () => {
         });
 
         expect(result.state()).toEqual(newState);
+    });
+
+    test(`button should have a 'sign in' label`, () => {
+        expect(result.find('button').props().children).toBe('Sign in');
+    });
+
+    test(`'checkCredentials' function should be invoked when button is clicked`, () => {
+        result.find('button').simulate('click', {
+            preventDefault: () => {
+
+            },
+        });
+
+        expect(result.props()).toBe('');
     });
 });

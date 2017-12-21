@@ -10,6 +10,8 @@ const props = {
     history:     {},
 };
 
+props.history.push = jest.fn();
+
 const result = mount(<SignoutButton { ...props } />);
 
 describe('SignoutButton component', () => {
@@ -27,5 +29,12 @@ describe('SignoutButton component', () => {
 
     test(`'button' element should have 'Sign out' label`, () => {
         expect(result.find('button').text()).toBe('Sign out');
+    });
+
+    test(`'handleLogin' method should be called once when button is clicked`, () => {
+        result.find('button').simulate('click');
+
+        expect(result.props().handleLogin.mock.calls).toHaveLength(1);
+
     });
 });

@@ -135,7 +135,7 @@ export default class Inbox extends Component {
                         '{{name.firstName}} {{name.lastName}}'
                     );
                     const subject = faker.fake('{{lorem.words}}').toString();
-    
+
                     prevState.emails.push({
                         content,
                         date,

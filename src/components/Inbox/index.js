@@ -65,6 +65,12 @@ export default class Inbox extends Component {
         }
     }
 
+    componentDidUpdate () {
+        const { emails } = this.state;
+
+        localStorage.setItem('myEmails', JSON.stringify(emails));
+    }
+
     _createRandomDate (end = moment(), start) {
         const endMoment = moment(end);
         const randomNumber = (to, from = 0) =>
@@ -221,7 +227,9 @@ export default class Inbox extends Component {
     }
     _toggleRead (event) {
         const id = event.target.id;
-        const { emails, unRead } = this.state;
+        const { unRead } = this.state;
+
+        const emails = JSON.parse(localStorage.getItem('myEmails'));
 
         this.setState(() => ({
             emails: emails.map(

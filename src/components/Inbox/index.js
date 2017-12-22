@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { func, object } from 'prop-types';
+import { bool, func, object } from 'prop-types';
 
 import EmailList from '../EmailList';
 import faker from 'faker';
@@ -14,8 +14,10 @@ import Styles from './styles.scss';
 
 export default class Inbox extends Component {
     static propTypes = {
-        handleLogin: func.isRequired,
-        history:     object.isRequired,
+        handleLogin:    func.isRequired,
+        handleRemember: func.isRequired,
+        history:        object.isRequired,
+        remember:       bool.isRequired,
     }
 
     constructor () {
@@ -40,7 +42,7 @@ export default class Inbox extends Component {
         emails:     [],
         important:  0,
         searchTerm: '',
-        selected:   [],
+        selected:   0,
         spam:       [],
         trash:      [],
         unRead:     [],
@@ -248,7 +250,7 @@ export default class Inbox extends Component {
     _toggleSelect (event) {
         const checkBox = event.target;
         const id = event.target.id;
-        const { emails } = this.state;
+        const { emails, selected } = this.state;
 
         if (checkBox.checked) {
             this.setState(() => ({
@@ -260,6 +262,7 @@ export default class Inbox extends Component {
                             })
                             : email
                 ),
+                selected: selected + 1,
             }));
         } else {
             this.setState(() => ({
@@ -271,6 +274,7 @@ export default class Inbox extends Component {
                             })
                             : email
                 ),
+                selected: selected - 1,
             }));
         }
     }
@@ -306,7 +310,7 @@ export default class Inbox extends Component {
             unRead,
         } = this.state;
 
-        const { handleLogin } = this.props;
+        const { handleLogin, handleRemember, history, remember } = this.props;
 
         return (
             <div className = { Styles.inboxNav }>
@@ -326,7 +330,9 @@ export default class Inbox extends Component {
                             <div>
                                 <SignoutButton
                                     handleLogin = { handleLogin }
-                                    history = { this.props.history }
+                                    handleRemember = { handleRemember }
+                                    history = { history }
+                                    remember = { remember }
                                 />
                             </div>
                             <form>

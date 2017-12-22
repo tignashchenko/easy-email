@@ -141,9 +141,9 @@ export default class Navigation extends Component {
 }
 
 Navigation.propTypes = {
+    importantEmails: number.isRequired,
     unreadEmails:    array.isRequired,
     emails:          array,
-    importantEmails: number.isRequired,
     spamEmails:      array,
     trashedEmails:   array,
 };

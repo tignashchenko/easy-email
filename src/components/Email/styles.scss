@@ -4,6 +4,7 @@ $unreadColor: #f0f8ff;
 $readColor: #fff;
 
 .emailUnread {
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     padding: 1% 0;
@@ -30,6 +31,7 @@ $readColor: #fff;
 }
 
 .emailRead {
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     padding: 1% 0;

@@ -28,12 +28,6 @@ export default class App extends Component {
     };
 
     _handleRemember () {
-        if (localStorage.getItem('remember') === 'true') {
-            return;
-        }
-
-        localStorage.setItem('remember', true);
-
         this.setState((prevState) => ({
             remember: !prevState.remember,
         }));
@@ -46,7 +40,7 @@ export default class App extends Component {
     }
 
     render () {
-        const { loggedIn, password, userId } = this.state;
+        const { loggedIn, password, remember, userId } = this.state;
 
         return (
             <BrowserRouter>
@@ -59,6 +53,8 @@ export default class App extends Component {
                                 <Inbox
                                     { ...routeProps }
                                     handleLogin = { this.handleLogin }
+                                    handleRemember = { this.handleRemember }
+                                    remember = { remember }
                                 />
                             )
                             }
@@ -72,6 +68,7 @@ export default class App extends Component {
                                     handleLogin = { this.handleLogin }
                                     handleRemember = { this.handleRemember }
                                     password = { password }
+                                    remember = { remember }
                                     userId = { userId }
                                 />
                             ) }
@@ -158,12 +155,17 @@ export default class App extends Component {
                         <Route
                             exact
                             path = '/'
-                            render = { (routeProps) => (
-                                <Redirect
-                                    to = '/login'
-                                    { ...routeProps }
-                                />
-                            ) }
+                            render = { (routeProps) =>
+                                remember && loggedIn
+                                    ? <Redirect
+                                        to = '/inbox'
+                                        { ...routeProps }
+                                    />
+                                    : <Redirect
+                                        to = '/login'
+                                        { ...routeProps }
+                                    />
+                            }
                         />
                     }
                     {

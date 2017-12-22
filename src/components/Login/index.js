@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { func, object, string } from 'prop-types';
+import { bool, func, object, string } from 'prop-types';
 
 import Styles from './styles.scss';
 
@@ -9,6 +9,7 @@ export default class Login extends Component {
         handleLogin:    func.isRequired,
         handleRemember: func.isRequired,
         password:       string.isRequired,
+        remember:       bool.isRequired,
         userId:         string.isRequired,
         history:        object,
     };
@@ -27,12 +28,16 @@ export default class Login extends Component {
     };
 
     _checkCredentials (event) {
-        const { handleLogin, history, password, userId } = this.props;
+        const { handleLogin, history, password, remember, userId } = this.props;
         const { attemptedPassword, attemptedUserId } = this.state;
 
         event.preventDefault();
 
-        if (password === attemptedPassword && userId === attemptedUserId) {
+        if (password === attemptedPassword && userId === attemptedUserId && remember) {
+            localStorage.setItem('remember', true);
+            handleLogin();
+            history.push('/inbox');
+        } else if (password === attemptedPassword && userId === attemptedUserId) {
             handleLogin();
             history.push('/inbox');
         }

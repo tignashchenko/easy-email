@@ -82,7 +82,7 @@ export default class Navigation extends Component {
                     <div className = { Styles.navOption }>
                         <MdEmail />
                         <Link to = '/inbox'>Inbox</Link>
-                        <span>{this.props.unreadEmails}</span>
+                        <span>{this.props.unreadEmails.length}</span>
                     </div>
                     <div className = { Styles.navOption }>
                         <FaExternalLink />
@@ -93,8 +93,8 @@ export default class Navigation extends Component {
                         <MdLightbulbOutline />
                         <Link to = '/important'>Important</Link>
                         <span>
-                            {this.props.importantEmails.length
-                                ? this.props.importantEmails.length
+                            {this.props.importantEmails
+                                ? this.props.importantEmails
                                 : null}
                         </span>
                     </div>
@@ -141,9 +141,9 @@ export default class Navigation extends Component {
 }
 
 Navigation.propTypes = {
-    unreadEmails:    number.isRequired,
+    unreadEmails:    array.isRequired,
     emails:          array,
-    importantEmails: array,
+    importantEmails: number.isRequired,
     spamEmails:      array,
     trashedEmails:   array,
 };

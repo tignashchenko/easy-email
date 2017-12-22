@@ -6,10 +6,11 @@ import Styles from './styles.scss';
 
 export default class Login extends Component {
     static propTypes = {
-        handleLogin: func.isRequired,
-        password:    string.isRequired,
-        userId:      string.isRequired,
-        history:     object,
+        handleLogin:    func.isRequired,
+        handleRemember: func.isRequired,
+        password:       string.isRequired,
+        userId:         string.isRequired,
+        history:        object,
     };
 
     constructor (props) {
@@ -50,6 +51,8 @@ export default class Login extends Component {
     }
 
     render () {
+        const { handleRemember } = this.props;
+
         return (
             <div className = { Styles.login }>
                 <h1>Sign in now</h1>
@@ -74,7 +77,7 @@ export default class Login extends Component {
                     </div>
                     <div className = { Styles.signInOptions }>
                         <div>
-                            <input id = 'rememberMe' type = 'checkbox' />
+                            <input id = 'rememberMe' type = 'checkbox' onChange = { handleRemember } />
                             <label htmlFor = 'rememberMe'>Remember Me</label>
                         </div>
                         <button type = 'submit' onClick = { this.checkCredentials }>

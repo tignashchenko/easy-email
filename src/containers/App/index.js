@@ -17,18 +17,26 @@ export default class App extends Component {
         super();
 
         this.handleLogin = this._handleLogin.bind(this);
+        this.handleRemember = this._handleRemember.bind(this);
     }
 
     state = {
-        loggedIn: localStorage.getItem('loggedIn') === 'true' ? true : false,
+        loggedIn: localStorage.getItem('loggedIn') === 'true' ? true : false, //eslint-disable-line
         password: 'asdf1234',
+        remember: localStorage.getItem('remember') === 'true' ? true : false, //eslint-disable-line
         userId:   'tignashchenko',
     };
 
-    componentWillUnmount () {
-        this.setState({
-            loggedIn: Boolean(localStorage.getItem('loggedIn')),
-        });
+    _handleRemember () {
+        if (localStorage.getItem('remember') === 'true') {
+            return;
+        }
+
+        localStorage.setItem('remember', true);
+
+        this.setState((prevState) => ({
+            remember: !prevState.remember,
+        }));
     }
 
     _handleLogin () {
@@ -62,6 +70,7 @@ export default class App extends Component {
                                 <Login
                                     { ...routeProps }
                                     handleLogin = { this.handleLogin }
+                                    handleRemember = { this.handleRemember }
                                     password = { password }
                                     userId = { userId }
                                 />

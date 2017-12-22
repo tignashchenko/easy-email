@@ -21,8 +21,6 @@ export default class Inbox extends Component {
     constructor () {
         super();
 
-        this.checkForUnread = this._checkForUnread.bind(this);
-        this.checkForSelections = this._checkForSelections.bind(this);
         this.createRandomDate = this._createRandomDate.bind(this);
         this.getEmails = this._getEmails.bind(this);
         this.handleEmailSearch = this._handleEmailSearch.bind(this);
@@ -30,7 +28,6 @@ export default class Inbox extends Component {
         this.handleSelections = this._handleSelections.bind(this);
         this.sortEmailsByDate = this._sortEmailsByDate.bind(this);
         this.searchEmails = this._searchEmails.bind(this);
-        this.sendToImportant = this._sendToImportant.bind(this);
         this.sendToSpam = this._sendToSpam.bind(this);
         this.sendToTrash = this._sendToTrash.bind(this);
         this.toggleImportant = this._toggleImportant.bind(this);
@@ -40,18 +37,19 @@ export default class Inbox extends Component {
         this.toggleSelectAll = this._toggleSelectAll.bind(this);
     }
     state = {
-        anySelected: false,
-        emails:      [],
-        important:   [],
-        searchTerm:  '',
-        spam:        [],
-        trash:       [],
-        unRead:      0,
+        emails:     [],
+        important:  0,
+        searchTerm: '',
+        selected:   [],
+        spam:       [],
+        trash:      [],
+        unRead:     [],
     };
 
     componentWillMount () {
         localStorage.setItem('loggedIn', true);
         this.getEmails();
+
         this.setState((prevState) => ({
             emails: this.sortEmailsByDate(prevState.emails).reverse(),
         }));
@@ -60,47 +58,9 @@ export default class Inbox extends Component {
     componentDidMount () {
         const { emails } = this.state;
 
-        this.checkForUnreadEmails = setInterval(this.checkForUnread, 250);
-        this.checkSelections = setInterval(this.checkForSelections, 250);
-        this.checkImportant = setInterval(this.sendToImportant, 250);
-
         if (!localStorage.getItem('myEmails')) {
             localStorage.setItem('myEmails', JSON.stringify(emails));
         }
-    }
-
-    componentWillUnmount () {
-        clearInterval(this.checkForUnreadEmails);
-        clearInterval(this.checkSelections);
-        clearInterval(this.checkImportant);
-    }
-
-    _checkForUnread () {
-        const { emails } = this.state;
-        let unReadEmails = 0;
-
-        for (let i = 0; i < emails.length; i++) {
-            if (emails[i].isUnread) {
-                unReadEmails += 1;
-            }
-        }
-
-        this.setState({ unRead: unReadEmails });
-    }
-
-    _checkForSelections () {
-        const { emails } = this.state;
-        let shouldUpdate = false;
-
-        for (let i = 0; i < emails.length; i++) {
-            if (emails[i].isSelected) {
-                shouldUpdate = true;
-            }
-        }
-
-        this.setState({
-            anySelected: shouldUpdate,
-        });
     }
 
     _createRandomDate (end = moment(), start) {
@@ -154,6 +114,7 @@ export default class Inbox extends Component {
         } else {
             this.setState({
                 emails: JSON.parse(localStorage.getItem('myEmails')),
+                unRead: JSON.parse(localStorage.getItem('myEmails')),
             });
         }
     }
@@ -185,21 +146,6 @@ export default class Inbox extends Component {
                         .indexOf(searchTerm.toLowerCase()) >= 0
             ),
         }));
-    }
-
-    _sendToImportant () {
-        const { emails } = this.state;
-        const importantEmails = [];
-
-        for (let i = 0; i < emails.length; i++) {
-            if (emails[i].isImportant) {
-                importantEmails.push(emails[i]);
-            }
-        }
-
-        this.setState({
-            important: [...importantEmails],
-        });
     }
 
     _sendToSpam () {
@@ -245,31 +191,46 @@ export default class Inbox extends Component {
     }
 
     _toggleImportant (event) {
+        const classLabel = event.target.className.baseVal;
         const id = event.target.id;
-        const { emails } = this.state;
+        const { emails, important } = this.state;
 
-        this.setState(() => ({
-            emails: emails.map(
-                (email) =>
+        if (!event.target.children[0]) {
+            return;
+        }
+
+        if (!classLabel) {
+            this.setState({
+                emails: emails.map((email) =>
                     email.id === id
-                        ? Object.assign(email, {
-                            isImportant: !email.isImportant,
-                        })
-                        : email
-            ),
-        }));
+                        ? Object.assign(email, { isImportant: true })
+                        : email),
+                important: important + 1,
+            });
+        } else {
+            this.setState({
+                emails: emails.map((email) =>
+                    email.id === id
+                        ? Object.assign(email, { isImportant: false })
+                        : email),
+                important: important - 1,
+            });
+        }
     }
-
     _toggleRead (event) {
         const id = event.target.id;
-        const { emails } = this.state;
+        const { emails, unRead } = this.state;
 
         this.setState(() => ({
             emails: emails.map(
                 (email) =>
                     email.id === id
-                        ? Object.assign(email, { isUnread: !email.isUnread })
+                        ? Object.assign(email, { isUnread: false })
                         : email
+            ),
+            unRead: unRead.filter(
+                (email) =>
+                    email.id !== id
             ),
         }));
     }
@@ -285,36 +246,61 @@ export default class Inbox extends Component {
     }
 
     _toggleSelect (event) {
+        const checkBox = event.target;
         const id = event.target.id;
         const { emails } = this.state;
 
-        this.setState(() => ({
-            emails: emails.map(
-                (email) =>
-                    email.id === id
-                        ? Object.assign(email, {
-                            isSelected: !email.isSelected,
-                        })
-                        : email
-            ),
-        }));
+        if (checkBox.checked) {
+            this.setState(() => ({
+                emails: emails.map(
+                    (email) =>
+                        email.id === id
+                            ? Object.assign(email, {
+                                isSelected: true,
+                            })
+                            : email
+                ),
+            }));
+        } else {
+            this.setState(() => ({
+                emails: emails.map(
+                    (email) =>
+                        email.id === id
+                            ? Object.assign(email, {
+                                isSelected: false,
+                            })
+                            : email
+                ),
+            }));
+        }
     }
 
-    _toggleSelectAll () {
+    _toggleSelectAll (event) {
+        const checkBox = event.target;
         const { emails } = this.state;
 
-        this.setState(() => ({
-            emails: emails.map((email) =>
-                Object.assign(email, { isSelected: !email.isSelected })
-            ),
-        }));
+        if (checkBox.checked) {
+            this.setState(() => ({
+                emails: emails.map((email) =>
+                    Object.assign(email, { isSelected: true })
+                ),
+                selected: emails.length,
+            }));
+        } else {
+            this.setState(() => ({
+                emails: emails.map((email) =>
+                    Object.assign(email, { isSelected: false })
+                ),
+                selected: 0,
+            }));
+        }
     }
 
     render () {
         const {
-            anySelected,
             emails,
             important,
+            selected,
             spam,
             trash,
             unRead,
@@ -335,7 +321,7 @@ export default class Inbox extends Component {
                 </div>
                 <div className = { Styles.inbox }>
                     <div className = { Styles.header }>
-                        <h1>Inbox {unRead}</h1>
+                        <h1>Inbox { unRead.length }</h1>
                         <div>
                             <div>
                                 <SignoutButton
@@ -373,14 +359,14 @@ export default class Inbox extends Component {
                             <label htmlFor = 'markAllAsRead'>
                                 Mark all as read
                             </label>
-                            {anySelected ? (
+                            { selected ? (
                                 <button
                                     type = 'submit'
                                     onClick = { this.sendToTrash }>
                                     Move to trash
                                 </button>
                             ) : null}
-                            {anySelected ? (
+                            { selected ? (
                                 <button type = 'submit' onClick = { this.sendToSpam }>
                                     Move to spam
                                 </button>

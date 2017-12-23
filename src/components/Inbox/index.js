@@ -63,6 +63,7 @@ export default class Inbox extends Component {
 
         if (!localStorage.getItem('myEmails')) {
             localStorage.setItem('myEmails', JSON.stringify(emails));
+            localStorage.setItem('emailsCopy', JSON.stringify(emails));
         }
 
         this.checkRead();
@@ -91,6 +92,8 @@ export default class Inbox extends Component {
         this.setState({
             unRead: unReadEmails,
         });
+
+        localStorage.setItem('emailsCopy', JSON.stringify(emails));
     }
 
     _createRandomDate (end = moment(), start) {
@@ -167,14 +170,20 @@ export default class Inbox extends Component {
     _searchEmails () {
         const { emails, searchTerm } = this.state;
 
-        this.setState(() => ({
-            emails: emails.filter(
-                (email) =>
-                    `${email.content} ${email.sender} ${email.subject}`
-                        .toLowerCase()
-                        .indexOf(searchTerm.toLowerCase()) >= 0
-            ),
-        }));
+        if (searchTerm === '') {
+            this.setState({
+                emails: JSON.parse(localStorage.getItem('emailsCopy')),
+            });
+        } else {
+            this.setState(() => ({
+                emails: emails.filter(
+                    (email) =>
+                        `${email.content} ${email.sender} ${email.subject}`
+                            .toLowerCase()
+                            .indexOf(searchTerm.toLowerCase()) >= 0
+                ),
+            }));
+        }
     }
 
     _sendToSpam () {
@@ -263,7 +272,7 @@ export default class Inbox extends Component {
                         : email
             ),
         }),
-        () => this.checkRead()
+        () => this.checkRead(),
         );
     }
 

@@ -23,6 +23,7 @@ export default class Inbox extends Component {
     constructor () {
         super();
 
+        this.checkRead = this._checkRead.bind(this);
         this.createRandomDate = this._createRandomDate.bind(this);
         this.getEmails = this._getEmails.bind(this);
         this.handleEmailSearch = this._handleEmailSearch.bind(this);
@@ -45,7 +46,7 @@ export default class Inbox extends Component {
         selected:   0,
         spam:       [],
         trash:      [],
-        unRead:     [],
+        unRead:     0,
     };
 
     componentWillMount () {
@@ -63,12 +64,33 @@ export default class Inbox extends Component {
         if (!localStorage.getItem('myEmails')) {
             localStorage.setItem('myEmails', JSON.stringify(emails));
         }
+
+        this.checkRead();
     }
 
     componentDidUpdate () {
         const { emails } = this.state;
 
         localStorage.setItem('myEmails', JSON.stringify(emails));
+    }
+
+    _checkRead () {
+        const { emails } = this.state;
+        let unReadEmails = 0;
+
+        for (let i = 0; i < emails.length; i++) {
+            if (emails[i].isUnread) {
+                unReadEmails += 1;
+            }
+        }
+
+        if (emails.length < unReadEmails) {
+            unReadEmails = unReadEmails.length;
+        }
+
+        this.setState({
+            unRead: unReadEmails,
+        });
     }
 
     _createRandomDate (end = moment(), start) {
@@ -122,7 +144,6 @@ export default class Inbox extends Component {
         } else {
             this.setState({
                 emails: JSON.parse(localStorage.getItem('myEmails')),
-                unRead: JSON.parse(localStorage.getItem('myEmails')),
             });
         }
     }
@@ -172,7 +193,9 @@ export default class Inbox extends Component {
         this.setState({
             emails: [...remainingEmails],
             spam:   [...spamEmails],
-        });
+        },
+        () => this.checkRead()
+        );
     }
 
     _sendToTrash () {
@@ -191,7 +214,9 @@ export default class Inbox extends Component {
         this.setState({
             emails: [...remainingEmails],
             trash:  [...trashedEmails],
-        });
+        },
+        () => this.checkRead()
+        );
     }
 
     _sortEmailsByDate (emails) {
@@ -227,7 +252,6 @@ export default class Inbox extends Component {
     }
     _toggleRead (event) {
         const id = event.target.id;
-        const { unRead } = this.state;
 
         const emails = JSON.parse(localStorage.getItem('myEmails'));
 
@@ -238,11 +262,9 @@ export default class Inbox extends Component {
                         ? Object.assign(email, { isUnread: false })
                         : email
             ),
-            unRead: unRead.filter(
-                (email) =>
-                    email.id !== id
-            ),
-        }));
+        }),
+        () => this.checkRead()
+        );
     }
 
     _toggleReadAll () {
@@ -252,7 +274,9 @@ export default class Inbox extends Component {
             emails: emails.map((email) =>
                 Object.assign(email, { isUnread: false })
             ),
-        }));
+        }),
+        () => this.checkRead()
+        );
     }
 
     _toggleSelect (event) {
@@ -324,16 +348,15 @@ export default class Inbox extends Component {
             <div className = { Styles.inboxNav }>
                 <div className = { Styles.nav }>
                     <Navigation
-                        emails = { emails }
                         importantEmails = { important }
                         spamEmails = { spam }
                         trashedEmails = { trash }
-                        unreadEmails = { unRead }
+                        unRead = { unRead }
                     />
                 </div>
                 <div className = { Styles.inbox }>
                     <div className = { Styles.header }>
-                        <h1>Inbox { unRead.length }</h1>
+                        <h1>Inbox { unRead }</h1>
                         <div>
                             <div>
                                 <SignoutButton

@@ -1,0 +1,19 @@
+.backdropStyle {
+    position: 'fixed';
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 50;
+    background-color: 'rgba(0,0,0,0.3)';
+
+    .modalStyle {
+        max-width: 500;
+        min-height: 300;
+        margin: '0 auto';
+        padding: 30;
+        border-radius: 5;
+        background-color: '#FFF';
+    }
+}
+
